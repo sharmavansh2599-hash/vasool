@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vasool AI - Get paid. Stay ahead.</title>
+<meta name="description" content="Vasool AI - receivables and collections intelligence for Indian MSMEs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2316A36A'/%3E%3Cpath d='M9 10l7 12 7-12' stroke='white' stroke-width='3.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+/* Vasool AI design system
+   Palette: charcoal #111827, green #16A36A, bg #F8FAFC, border #E2E8F0,
+   text #0F172A, secondary #64748B, warning #E9A23B, danger #DC5656. */
+
+:root {
+  --primary: #111827;
+  --accent: #16A36A;
+  --accent-dark: #0F8554;
+  --accent-tint: #E7F6EF;
+  --bg: #F8FAFC;
+  --card: #FFFFFF;
+  --border: #E2E8F0;
+  --text: #0F172A;
+  --muted: #64748B;
+  --warning: #E9A23B;
+  --warning-tint: #FBF3E4;
+  --danger: #DC5656;
+  --danger-tint: #FBEBEB;
+  --info-tint: #EDF2F9;
+  --radius: 10px;
+  --radius-sm: 7px;
+  --shadow: 0 1px 2px rgba(15,23,42,.05), 0 1px 3px rgba(15,23,42,.06);
+  --shadow-lg: 0 8px 24px rgba(15,23,42,.12);
+  --sidebar-w: 244px;
+  --sidebar-wc: 66px;
+  --font: "Inter", -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent-dark); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font-family: var(--font); }
+.num { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+#app { display: flex; min-height: 100vh; }
+
+/* ---------------- Sidebar ---------------- */
+#sidebar {
+  width: var(--sidebar-w);
+  background: var(--primary);
+  color: #CBD5E1;
+  display: flex; flex-direction: column;
+  position: sticky; top: 0; height: 100vh;
+  flex-shrink: 0;
+  transition: width .18s ease, transform .18s ease;
+  z-index: 40;
+}
+#sidebar .brand {
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px 18px 14px;
+  color: #fff;
+}
+#sidebar .brand .logo {
+  width: 32px; height: 32px; border-radius: 8px; background: var(--accent);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+#sidebar .brand .logo svg { width: 18px; height: 18px; }
+#sidebar .brand .name { font-weight: 700; font-size: 15px; letter-spacing: -.2px; white-space: nowrap; }
+#sidebar .brand .tag { font-size: 10.5px; color: #94A3B8; white-space: nowrap; }
+#sidebar nav { flex: 1; overflow-y: auto; padding: 6px 10px 10px; }
+#sidebar .sec { font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: #64748B; padding: 14px 10px 6px; }
+#sidebar .nav-item {
+  display: flex; align-items: center; gap: 11px;
+  padding: 8.5px 10px; margin: 1px 0;
+  border-radius: var(--radius-sm);
+  color: #CBD5E1; font-weight: 500; font-size: 13.5px;
+  cursor: pointer; white-space: nowrap;
+}
+#sidebar .nav-item:hover { background: rgba(255,255,255,.06); color: #fff; text-decoration: none; }
+#sidebar .nav-item.active { background: var(--accent); color: #fff; }
+#sidebar .nav-item svg { width: 17px; height: 17px; flex-shrink: 0; }
+#sidebar .nav-item .count {
+  margin-left: auto; background: rgba(255,255,255,.12); color: #E2E8F0;
+  font-size: 10.5px; font-weight: 600; border-radius: 20px; padding: 1px 7px;
+}
+#sidebar .nav-item.active .count { background: rgba(0,0,0,.22); color: #fff; }
+#sidebar .side-foot { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,.08); font-size: 11px; color: #64748B; }
+#sidebar .collapse-btn {
+  display: flex; align-items: center; gap: 11px; width: calc(100% - 20px);
+  margin: 4px 10px 10px; padding: 8px 10px; border: 0; border-radius: var(--radius-sm);
+  background: none; color: #94A3B8; cursor: pointer; font-size: 13px;
+}
+#sidebar .collapse-btn:hover { background: rgba(255,255,255,.06); color: #fff; }
+
+body.sidebar-collapsed #sidebar { width: var(--sidebar-wc); }
+body.sidebar-collapsed #sidebar .name,
+body.sidebar-collapsed #sidebar .tag,
+body.sidebar-collapsed #sidebar .nav-item span,
+body.sidebar-collapsed #sidebar .nav-item .count,
+body.sidebar-collapsed #sidebar .sec,
+body.sidebar-collapsed #sidebar .side-foot,
+body.sidebar-collapsed #sidebar .collapse-btn span { display: none; }
+body.sidebar-collapsed #sidebar .nav-item { justify-content: center; padding: 9px 0; }
+body.sidebar-collapsed #sidebar .brand { justify-content: center; padding: 18px 0 14px; }
+
+#scrim { position: fixed; inset: 0; background: rgba(15,23,42,.45); z-index: 35; }
+
+/* ---------------- Main / topbar ---------------- */
+#main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+#topbar {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: 14px;
+  background: var(--card); border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 58px;
+}
+#topbar .menu-btn { display: none; }
+#topbar .ws-name { font-weight: 600; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; }
+#topbar .sample-pill {
+  font-size: 10.5px; font-weight: 600; color: #92610F; background: var(--warning-tint);
+  border: 1px solid #EDD9AE; padding: 2px 8px; border-radius: 20px; white-space: nowrap;
+}
+#topbar .search-wrap { position: relative; flex: 1; max-width: 460px; margin-left: auto; }
+#topbar .search-wrap svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--muted); }
+#topbar input.search {
+  width: 100%; padding: 7.5px 12px 7.5px 33px; border: 1px solid var(--border);
+  border-radius: 8px; font-size: 13px; background: var(--bg); outline: none;
+}
+#topbar input.search:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(22,163,106,.12); }
+.icon-btn {
+  position: relative; display: grid; place-items: center;
+  width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--border);
+  background: #fff; color: var(--muted); cursor: pointer;
+}
+.icon-btn:hover { color: var(--text); border-color: #CBD5E1; }
+.icon-btn .dot {
+  position: absolute; top: -4px; right: -4px; min-width: 16px; height: 16px;
+  background: var(--danger); color: #fff; border-radius: 10px; font-size: 10px;
+  font-weight: 700; display: grid; place-items: center; padding: 0 4px;
+}
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--primary);
+  color: #fff; font-size: 12px; font-weight: 600; display: grid; place-items: center; cursor: pointer;
+}
+
+/* dropdowns */
+.dropdown {
+  position: absolute; top: 44px; right: 0; width: 330px; max-height: 420px; overflow-y: auto;
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow-lg); z-index: 60; padding: 6px;
+}
+.dropdown .dd-head { font-size: 12px; font-weight: 600; color: var(--muted); padding: 8px 10px 4px; text-transform: uppercase; letter-spacing: .05em; }
+.dropdown .dd-item { display: block; padding: 9px 10px; border-radius: var(--radius-sm); color: var(--text); font-size: 13px; }
+.dropdown .dd-item:hover { background: var(--bg); text-decoration: none; }
+.dropdown .dd-item .sub { color: var(--muted); font-size: 12px; }
+.dropdown .dd-empty { padding: 18px; text-align: center; color: var(--muted); font-size: 13px; }
+.search-results { position: absolute; top: 40px; left: 0; right: 0; background: #fff; border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-lg); z-index: 60; padding: 6px; }
+
+/* ---------------- Page ---------------- */
+#page { padding: 26px 28px 60px; max-width: 1240px; width: 100%; margin: 0 auto; outline: none; }
+.page-head { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+.page-head h1 { font-size: 21px; font-weight: 700; margin: 0; letter-spacing: -.3px; }
+.page-head .desc { color: var(--muted); margin-top: 3px; font-size: 13.5px; max-width: 640px; }
+.page-head .head-actions { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid var(--border); background: #fff; color: var(--text);
+  font-size: 13px; font-weight: 500; padding: 7.5px 13px; border-radius: 8px; cursor: pointer;
+}
+.btn:hover { border-color: #CBD5E1; background: var(--bg); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+.btn.danger { color: var(--danger); }
+.btn.danger:hover { border-color: var(--danger); background: var(--danger-tint); }
+.btn.small { padding: 5px 10px; font-size: 12.5px; }
+.btn svg { width: 14px; height: 14px; }
+.btn:disabled { opacity: .55; cursor: default; }
+
+/* cards & grids */
+.card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+.card .card-head { display: flex; align-items: center; gap: 10px; padding: 15px 18px 0; }
+.card .card-head h3 { font-size: 14px; font-weight: 600; margin: 0; }
+.card .card-head .hint { font-size: 12px; color: var(--muted); margin-left: auto; }
+.card .card-body { padding: 14px 18px 18px; }
+.grid { display: grid; gap: 16px; }
+.grid.kpis { grid-template-columns: repeat(4, 1fr); margin-bottom: 16px; }
+.grid.two { grid-template-columns: 1.6fr 1fr; }
+.grid.two-even { grid-template-columns: 1fr 1fr; }
+.grid > .card { min-width: 0; }
+
+/* KPI card */
+.kpi { padding: 16px 18px; }
+.kpi .k-label { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--muted); font-weight: 500; }
+.kpi .k-label svg { width: 15px; height: 15px; }
+.kpi .k-value { font-size: 25px; font-weight: 700; letter-spacing: -.5px; margin-top: 7px; }
+.kpi .k-sub { font-size: 12px; color: var(--muted); margin-top: 5px; }
+.kpi .k-sub .up { color: var(--accent-dark); font-weight: 600; }
+.kpi .k-sub .down { color: var(--danger); font-weight: 600; }
+.kpi.warn .k-value { color: #B07A17; }
+
+/* badges & pills */
+.badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; padding: 2.5px 9px; border-radius: 20px; white-space: nowrap; }
+.badge.paid { background: var(--accent-tint); color: var(--accent-dark); }
+.badge.due { background: var(--info-tint); color: #33507A; }
+.badge.partial { background: var(--warning-tint); color: #92610F; }
+.badge.overdue { background: var(--danger-tint); color: var(--danger); }
+.badge.disputed { background: #F3E8FB; color: #7C3AAD; }
+.badge.done { background: var(--accent-tint); color: var(--accent-dark); }
+.badge.open { background: var(--danger-tint); color: var(--danger); }
+.badge.resolved { background: var(--accent-tint); color: var(--accent-dark); }
+.risk { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; }
+.risk::before { content: ""; width: 7px; height: 7px; border-radius: 50%; }
+.risk.high { color: var(--danger); } .risk.high::before { background: var(--danger); }
+.risk.medium { color: #B07A17; } .risk.medium::before { background: var(--warning); }
+.risk.low { color: var(--accent-dark); } .risk.low::before { background: var(--accent); }
+.risk.clear { color: var(--muted); } .risk.clear::before { background: #CBD5E1; }
+
+/* tables */
+.tbl-wrap { overflow-x: auto; }
+table.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl th {
+  text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--muted); font-weight: 600; padding: 9px 12px; border-bottom: 1px solid var(--border);
+  background: var(--bg); white-space: nowrap;
+}
+.tbl td { padding: 11px 12px; border-bottom: 1px solid #EEF2F6; vertical-align: middle; }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl tbody tr { cursor: pointer; }
+.tbl tbody tr:hover { background: #F6FAF8; }
+.tbl td.r, .tbl th.r { text-align: right; }
+.tbl .t-main { font-weight: 600; color: var(--text); }
+.tbl .t-sub { font-size: 12px; color: var(--muted); }
+
+/* filters bar */
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+.filters input[type=text], .filters select, .filters input[type=date] {
+  padding: 7px 11px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px;
+  font-family: var(--font); background: #fff; outline: none; color: var(--text);
+}
+.filters input:focus, .filters select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(22,163,106,.12); }
+.filters .spacer { flex: 1; }
+.chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); background: #fff;
+  font-size: 12.5px; font-weight: 500; color: var(--muted); cursor: pointer;
+}
+.chip.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+/* list rows (action centre, insights, queue) */
+.row-item { display: flex; gap: 12px; padding: 11px 0; border-bottom: 1px solid #EEF2F6; align-items: flex-start; }
+.row-item:last-child { border-bottom: 0; }
+.row-item .ic {
+  width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+  display: grid; place-items: center; background: var(--info-tint); color: #33507A;
+}
+.row-item .ic.green { background: var(--accent-tint); color: var(--accent-dark); }
+.row-item .ic.amber { background: var(--warning-tint); color: #92610F; }
+.row-item .ic.red { background: var(--danger-tint); color: var(--danger); }
+.row-item .ic svg { width: 15px; height: 15px; }
+.row-item .ri-body { flex: 1; min-width: 0; }
+.row-item .ri-title { font-weight: 600; font-size: 13px; }
+.row-item .ri-sub { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+.row-item .ri-amt { font-weight: 700; white-space: nowrap; }
+.row-item .ri-act { flex-shrink: 0; }
+
+/* insights */
+.insight { border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius-sm); padding: 13px 15px; margin-bottom: 10px; background: #FDFEFD; }
+.insight.warn { border-left-color: var(--warning); }
+.insight.danger { border-left-color: var(--danger); }
+.insight .in-title { font-weight: 600; font-size: 13px; display: flex; gap: 8px; align-items: center; }
+.insight .in-title .why { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; border: 1px solid var(--border); border-radius: 6px; padding: 2px 7px; background: #fff; }
+.insight .in-text { font-size: 13px; color: #334155; margin-top: 6px; }
+.insight .in-foot { margin-top: 9px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.insight .in-rec { font-size: 11.5px; background: #fff; border: 1px solid var(--border); padding: 2px 8px; border-radius: 6px; color: var(--muted); }
+
+/* tabs */
+.tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.tabs .tab { padding: 8px 14px; font-size: 13px; font-weight: 500; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabs .tab.on { color: var(--accent-dark); border-bottom-color: var(--accent); font-weight: 600; }
+
+/* detail header */
+.detail-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+.detail-head .back { color: var(--muted); display: inline-flex; align-items: center; gap: 5px; font-size: 13px; }
+.detail-head h1 { font-size: 20px; margin: 0; }
+.stat-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.stat-strip .stat { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; }
+.stat-strip .stat .s-label { font-size: 11.5px; color: var(--muted); }
+.stat-strip .stat .s-value { font-size: 17px; font-weight: 700; margin-top: 3px; }
+
+/* timeline */
+.timeline { position: relative; padding-left: 20px; }
+.timeline::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: 6px; width: 1.5px; background: var(--border); }
+.tl-item { position: relative; padding: 0 0 16px 8px; }
+.tl-item::before { content: ""; position: absolute; left: -19px; top: 5px; width: 9px; height: 9px; border-radius: 50%; background: #fff; border: 2px solid var(--accent); }
+.tl-item.in::before { border-color: var(--warning); }
+.tl-item .tl-date { font-size: 11.5px; color: var(--muted); }
+.tl-item .tl-text { font-size: 13px; margin-top: 2px; }
+
+/* modal */
+.modal-scrim { position: fixed; inset: 0; background: rgba(15,23,42,.5); z-index: 80; display: grid; place-items: center; padding: 18px; }
+.modal { background: #fff; border-radius: 12px; box-shadow: var(--shadow-lg); width: 100%; max-width: 520px; max-height: 86vh; overflow-y: auto; }
+.modal .m-head { display: flex; align-items: center; padding: 16px 20px 0; }
+.modal .m-head h3 { margin: 0; font-size: 15.5px; }
+.modal .m-head .x { margin-left: auto; border: 0; background: none; cursor: pointer; color: var(--muted); font-size: 18px; line-height: 1; padding: 4px; }
+.modal .m-body { padding: 14px 20px 20px; }
+.modal .m-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 0 20px 18px; }
+.modal label.f { display: block; font-size: 12.5px; font-weight: 500; color: var(--muted); margin: 12px 0 5px; }
+.modal input, .modal select, .modal textarea {
+  width: 100%; padding: 8px 11px; border: 1px solid var(--border); border-radius: 8px;
+  font-size: 13px; font-family: var(--font); outline: none;
+}
+.modal input:focus, .modal textarea:focus, .modal select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(22,163,106,.12); }
+.draft-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 13px 14px; font-size: 13px; white-space: pre-wrap; margin-top: 8px; }
+.draft-note { font-size: 11.5px; color: var(--muted); margin-top: 8px; display: flex; gap: 6px; align-items: center; }
+
+/* toast */
+#toasts { position: fixed; bottom: 20px; right: 20px; z-index: 100; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  background: var(--primary); color: #fff; padding: 11px 16px; border-radius: 9px;
+  font-size: 13px; box-shadow: var(--shadow-lg); display: flex; gap: 9px; align-items: center;
+  animation: slideup .18s ease;
+}
+.toast svg { width: 15px; height: 15px; color: #34D399; }
+@keyframes slideup { from { transform: translateY(8px); opacity: 0; } }
+
+/* empty & skeleton */
+.empty { text-align: center; padding: 40px 20px; color: var(--muted); }
+.empty .e-ic { width: 46px; height: 46px; border-radius: 12px; background: var(--bg); border: 1px solid var(--border); display: inline-grid; place-items: center; margin-bottom: 12px; color: var(--muted); }
+.empty .e-title { font-weight: 600; color: var(--text); font-size: 14px; }
+.empty .e-sub { font-size: 13px; margin-top: 4px; max-width: 340px; margin-left: auto; margin-right: auto; }
+.skel { background: linear-gradient(90deg, #EEF2F6 25%, #E2E8F0 50%, #EEF2F6 75%); background-size: 200% 100%; animation: shimmer 1.2s infinite; border-radius: 6px; }
+@keyframes shimmer { to { background-position: -200% 0; } }
+.error-card { text-align: center; padding: 34px; color: var(--muted); }
+
+/* charts */
+.chart { width: 100%; }
+.chart .axis { font-size: 10.5px; fill: var(--muted); }
+.chart .grid-line { stroke: #EEF2F6; stroke-width: 1; }
+.legend { display: flex; gap: 16px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+.legend .lg { display: flex; align-items: center; gap: 6px; }
+.legend .sw { width: 10px; height: 10px; border-radius: 3px; }
+.ageing-row { display: flex; align-items: center; gap: 12px; margin-bottom: 11px; }
+.ageing-row .ag-label { width: 56px; font-size: 12.5px; color: var(--muted); font-weight: 500; }
+.ageing-row .ag-bar { flex: 1; height: 22px; background: var(--bg); border-radius: 6px; overflow: hidden; }
+.ageing-row .ag-fill { height: 100%; border-radius: 6px; }
+.ageing-row .ag-val { width: 92px; text-align: right; font-weight: 600; font-size: 13px; }
+
+.progress { height: 6px; background: #EEF2F6; border-radius: 4px; overflow: hidden; }
+.progress .p-fill { height: 100%; background: var(--accent); border-radius: 4px; }
+
+.section-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 18px 0 8px; }
+.assumptions { background: var(--bg); border: 1px dashed #CBD5E1; border-radius: var(--radius-sm); padding: 12px 14px; font-size: 12.5px; color: var(--muted); }
+.assumptions li { margin: 3px 0; }
+.kv { display: grid; grid-template-columns: 150px 1fr; gap: 7px 14px; font-size: 13px; }
+.kv .k { color: var(--muted); }
+
+.footer-note { margin-top: 34px; padding-top: 14px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+/* scenario cards */
+.scn-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 16px; }
+.scn { border: 1px solid var(--border); border-radius: var(--radius); padding: 15px 16px; background: #fff; }
+.scn.on { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(22,163,106,.1); }
+.scn .sc-name { font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.scn .sc-val { font-size: 21px; font-weight: 700; margin-top: 5px; }
+.scn .sc-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+/* unscaled inline svg guards */
+.card-head > svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--accent-dark); }
+.in-title > svg { width: 13px; height: 13px; flex-shrink: 0; }
+.ri-sub svg { width: 12px; height: 12px; vertical-align: -1.5px; }
+.collapse-btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+.footer-note svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--warning); }
+.draft-note svg { width: 13px; height: 13px; flex-shrink: 0; }
+.dd-item svg { width: 14px; height: 14px; vertical-align: -2px; }
+
+/* responsive */
+@media (max-width: 1100px) {
+  .grid.kpis { grid-template-columns: repeat(2, 1fr); }
+  .grid.two, .grid.two-even { grid-template-columns: 1fr; }
+  .scn-grid { grid-template-columns: 1fr; }
+  .stat-strip { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 860px) {
+  #sidebar {
+    position: fixed; left: 0; top: 0; transform: translateX(-100%);
+    width: var(--sidebar-w) !important;
+  }
+  body.sidebar-open #sidebar { transform: translateX(0); box-shadow: var(--shadow-lg); }
+  body.sidebar-open #scrim { display: block; }
+  body.sidebar-collapsed #sidebar .name,
+  body.sidebar-collapsed #sidebar .tag,
+  body.sidebar-collapsed #sidebar .nav-item span,
+  body.sidebar-collapsed #sidebar .nav-item .count,
+  body.sidebar-collapsed #sidebar .sec,
+  body.sidebar-collapsed #sidebar .side-foot { display: block; }
+  body.sidebar-collapsed #sidebar .nav-item { justify-content: flex-start; padding: 8.5px 10px; }
+  #topbar { padding: 0 14px; gap: 8px; }
+  #topbar .menu-btn { display: grid; }
+  #topbar .ws-name { max-width: 150px; }
+  #topbar .search-wrap { max-width: none; }
+  #page { padding: 18px 14px 50px; }
+}
+@media (max-width: 480px) {
+  #topbar .sample-pill { display: none; }
+  #topbar .ws-name { max-width: 90px; }
+  .grid.kpis { grid-template-columns: 1fr 1fr; }
+  .kpi .k-value { font-size: 20px; }
+}
+
+</style>
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar" aria-label="Primary"></aside>
+  <div id="scrim" hidden></div>
+  <div id="main">
+    <header id="topbar"></header>
+    <main id="page" tabindex="-1"></main>
+  </div>
+</div>
+<div id="overlays"></div>
+<script>
+/* util.js - formatting, api, icons, toast, modal */
+"use strict";
+
+const $ = (sel, el) => (el || document).querySelector(sel);
+const $$ = (sel, el) => Array.from((el || document).querySelectorAll(sel));
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
+  ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+/* Indian currency: full grouping + lakh/crore short form */
+function inrFull(n) {
+  n = Math.round(Number(n) || 0);
+  const neg = n < 0; n = Math.abs(n);
+  const s = String(n);
+  let out = s;
+  if (s.length > 3) {
+    let head = s.slice(0, -3), tail = s.slice(-3);
+    const parts = [];
+    while (head.length > 2) { parts.unshift(head.slice(-2)); head = head.slice(0, -2); }
+    if (head) parts.unshift(head);
+    out = parts.join(",") + "," + tail;
+  }
+  return (neg ? "-₹" : "₹") + out;
+}
+function inrShort(n) {
+  n = Number(n) || 0;
+  const neg = n < 0 ? "-" : "";
+  n = Math.abs(n);
+  if (n >= 1e7) return neg + "₹" + trimNum(n / 1e7, 2) + " Cr";
+  if (n >= 1e5) return neg + "₹" + trimNum(n / 1e5, 1) + " L";
+  if (n >= 1e3) return neg + "₹" + trimNum(n / 1e3, 1) + "k";
+  return neg + "₹" + n;
+}
+function trimNum(v, dp) {
+  const s = v.toFixed(dp);
+  return s.replace(/\.0+$/, "").replace(/(\.\d*?)0+$/, "$1");
+}
+function fmtDate(iso) {
+  if (!iso) return "-";
+  const [y, m, d] = iso.split("-");
+  return `${d}/${m}/${y}`;
+}
+function relDay(iso, today) {
+  const d = new Date(iso + "T00:00:00");
+  const t = new Date(today + "T00:00:00");
+  const diff = Math.round((d - t) / 86400000);
+  if (diff === 0) return "Today";
+  if (diff === 1) return "Tomorrow";
+  if (diff === -1) return "Yesterday";
+  return diff > 0 ? `In ${diff}d` : `${-diff}d ago`;
+}
+
+/* api */
+async function api(path, opts) {
+  const res = await fetch(path, opts ? {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(opts),
+  } : undefined);
+  if (!res.ok) {
+    let msg = "Request failed";
+    try { msg = (await res.json()).error || msg; } catch (e) {}
+    throw new Error(msg);
+  }
+  return res.json();
+}
+
+/* icons (inline SVG, stroke style) */
+const IC = {
+  overview: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  invoices: '<path d="M7 3h7l4 4v14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 17h4"/>',
+  customers: '<circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c.6-3.2 2.9-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.8 14.6c2.4.3 4 1.9 4.5 4.4"/>',
+  collections: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/>',
+  followups: '<path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/>',
+  cashflow: '<path d="M3 17l5-6 4 3 6-8"/><path d="M14 6h4v4"/>',
+  disputes: '<path d="M12 3l8 3v6c0 4.5-3.2 7.6-8 9-4.8-1.4-8-4.5-8-9V6z"/><path d="M12 9v4"/><circle cx="12" cy="16" r=".5" fill="currentColor"/>',
+  reports: '<path d="M5 20V10M11 20V4M17 20v-7"/><path d="M3 20h18"/>',
+  settings: '<circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2-1.2L14.2 3h-4l-.4 2.7a7 7 0 0 0-2 1.2l-2.3-1-2 3.4 2 1.5a7 7 0 0 0 0 2.4l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2 1.2l.4 2.7h4l.4-2.7a7 7 0 0 0 2-1.2l2.3 1 2-3.4-2-1.5c.06-.4.1-.8.1-1.2z"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  bell: '<path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2.2 2.2 0 0 0 4 0"/>',
+  help: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.2A2.6 2.6 0 0 1 12 7.5c1.4 0 2.5 1 2.5 2.3 0 1.7-2.2 2-2.5 3.4"/><circle cx="12" cy="16.8" r=".5" fill="currentColor"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+  chevL: '<path d="M14 6l-6 6 6 6"/>',
+  chevR: '<path d="M10 6l6 6-6 6"/>',
+  collapse: '<path d="M13 6l-6 6 6 6"/><path d="M19 6l-6 6 6 6"/>',
+  phone: '<path d="M5 4h4l1.5 4L8 10a12 12 0 0 0 6 6l2-2.5 4 1.5v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+  whatsapp: '<path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z"/><path d="M8.8 9.2c0 3.4 2.8 6 6 6l1.4-1.5-2.2-1.3-1 .8a4.7 4.7 0 0 1-2.3-2.2l.8-1-1.2-2.2z"/>',
+  email: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7l8.5 6 8.5-6"/>',
+  check: '<path d="M5 13l4 4L19 7"/>',
+  clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  alert: '<path d="M12 3l10 17H2z"/><path d="M12 10v4"/><circle cx="12" cy="17" r=".5" fill="currentColor"/>',
+  spark: '<path d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/><path d="M18.5 15l.9 2.6 2.6.9-2.6.9-.9 2.6-.9-2.6-2.6-.9 2.6-.9z"/>',
+  arrowR: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>',
+  download: '<path d="M12 4v11M7 11l5 5 5-5"/><path d="M4 20h16"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9.5h18M8 3v4M16 3v4"/>',
+  wallet: '<rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18M16 15h2"/>',
+  trend: '<path d="M3 17l5-6 4 3 6-8"/>',
+  building: '<rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/>',
+  rupee: '<path d="M7 4h10M7 8h10M7 4c6 0 8 2 8 4s-2 4-8 4l7 8"/>',
+};
+function icon(name, cls) {
+  return `<svg class="${cls || ""}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[name] || ""}</svg>`;
+}
+
+/* toast */
+function toast(msg) {
+  let host = $("#toasts");
+  if (!host) { host = document.createElement("div"); host.id = "toasts"; document.body.appendChild(host); }
+  const t = document.createElement("div");
+  t.className = "toast";
+  t.innerHTML = icon("check") + esc(msg);
+  host.appendChild(t);
+  setTimeout(() => t.remove(), 3200);
+}
+
+/* modal */
+function openModal(html, onClose) {
+  const host = $("#overlays");
+  const scrim = document.createElement("div");
+  scrim.className = "modal-scrim";
+  scrim.innerHTML = `<div class="modal" role="dialog" aria-modal="true">${html}</div>`;
+  host.appendChild(scrim);
+  const close = () => { scrim.remove(); onClose && onClose(); };
+  scrim.addEventListener("mousedown", (e) => { if (e.target === scrim) close(); });
+  const x = $(".x", scrim);
+  if (x) x.addEventListener("click", close);
+  document.addEventListener("keydown", function esc2(e) {
+    if (e.key === "Escape") { close(); document.removeEventListener("keydown", esc2); }
+  });
+  return close;
+}
+function confirmModal(title, text, okLabel, onOk, danger) {
+  const close = openModal(`
+    <div class="m-head"><h3>${esc(title)}</h3><button class="x" aria-label="Close">&times;</button></div>
+    <div class="m-body"><p style="margin:0;font-size:13.5px;color:#334155">${esc(text)}</p></div>
+    <div class="m-actions">
+      <button class="btn" data-act="no">Cancel</button>
+      <button class="btn ${danger ? "primary" : "primary"}" data-act="ok" ${danger ? 'style="background:var(--danger);border-color:var(--danger)"' : ""}>${esc(okLabel)}</button>
+    </div>`);
+  $('[data-act="no"]', $("#overlays")).addEventListener("click", close);
+  $('[data-act="ok"]', $("#overlays")).addEventListener("click", () => { close(); onOk(); });
+}
+
+/* badges */
+function statusBadge(s) {
+  const labels = { paid: "Paid", due: "Due", partial: "Part paid", overdue: "Overdue", disputed: "Disputed" };
+  return `<span class="badge ${s}">${labels[s] || s}</span>`;
+}
+function riskPill(r) {
+  const labels = { high: "High risk", medium: "Medium", low: "Low", clear: "Clear" };
+  return `<span class="risk ${r}">${labels[r] || r}</span>`;
+}
+
+/* empty / skeleton / error */
+function emptyState(title, sub, iconName) {
+  return `<div class="empty">
+    <div class="e-ic">${icon(iconName || "invoices")}</div>
+    <div class="e-title">${esc(title)}</div>
+    <div class="e-sub">${esc(sub)}</div>
+  </div>`;
+}
+function skeleton(rows) {
+  let h = '<div class="card" style="padding:18px">';
+  for (let i = 0; i < (rows || 4); i++)
+    h += `<div class="skel" style="height:14px;margin:12px 0;width:${88 - i * 11}%"></div>`;
+  return h + "</div>";
+}
+function errorCard(msg, retry) {
+  return `<div class="card error-card">
+    <p>${esc(msg || "Something went wrong while loading this page.")}</p>
+    <button class="btn" onclick="location.hash='${retry || location.hash}';window.dispatchEvent(new Event('hashchange'))">Retry</button>
+  </div>`;
+}
+
+const STATUS_LABELS = { paid: "Paid", due: "Due", partial: "Part paid", overdue: "Overdue", disputed: "Disputed" };
+
+</script>
+<script>
+/* charts.js - small dependency-free SVG charts */
+"use strict";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function monthLabel(key) {
+  const [y, m] = key.split("-").map(Number);
+  return MONTHS[m - 1] + " " + String(y).slice(2);
+}
+
+/* grouped bar chart: series [{label,color,values:[..]}], labels [] */
+function groupedBars(labels, series, height) {
+  const W = 720, H = height || 220, padL = 46, padB = 26, padT = 12, padR = 8;
+  const max = Math.max(1, ...series.flatMap((s) => s.values));
+  const nice = niceMax(max);
+  const iw = W - padL - padR, ih = H - padT - padB;
+  const groups = labels.length;
+  const gw = iw / groups;
+  const bw = Math.min(22, (gw - 14) / series.length);
+  let g = "";
+  for (let i = 0; i <= 4; i++) {
+    const y = padT + ih - (ih * i) / 4;
+    const v = (nice * i) / 4;
+    g += `<line class="grid-line" x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}"/>
+          <text class="axis" x="${padL - 6}" y="${y + 3}" text-anchor="end">${inrShort(v).replace("₹", "")}</text>`;
+  }
+  labels.forEach((lb, gi) => {
+    const x0 = padL + gi * gw + (gw - bw * series.length) / 2;
+    series.forEach((s, si) => {
+      const v = s.values[gi] || 0;
+      const h = (v / nice) * ih;
+      const x = x0 + si * bw;
+      g += `<rect x="${x.toFixed(1)}" y="${(padT + ih - h).toFixed(1)}" width="${(bw - 4).toFixed(1)}" height="${Math.max(h, 0).toFixed(1)}" rx="3" fill="${s.color}"><title>${lb} - ${s.label}: ${inrFull(v)}</title></rect>`;
+    });
+    g += `<text class="axis" x="${padL + gi * gw + gw / 2}" y="${H - 8}" text-anchor="middle">${monthLabel(lb)}</text>`;
+  });
+  const legend = series.map((s) =>
+    `<span class="lg"><span class="sw" style="background:${s.color}"></span>${s.label}</span>`).join("");
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img">${g}</svg><div class="legend">${legend}</div>`;
+}
+
+/* line chart: points [{label, value}] (null values skipped) */
+function lineChart(points, height) {
+  const W = 720, H = height || 200, padL = 40, padB = 26, padT = 12, padR = 10;
+  const vals = points.map((p) => p.value);
+  const nums = vals.filter((v) => v != null);
+  const max = niceMax(Math.max(1, ...nums));
+  const iw = W - padL - padR, ih = H - padT - padB;
+  const x = (i) => padL + (iw * i) / Math.max(1, points.length - 1);
+  const y = (v) => padT + ih - (v / max) * ih;
+  let g = "";
+  for (let i = 0; i <= 4; i++) {
+    const yy = padT + ih - (ih * i) / 4;
+    g += `<line class="grid-line" x1="${padL}" y1="${yy}" x2="${W - padR}" y2="${yy}"/>
+          <text class="axis" x="${padL - 6}" y="${yy + 3}" text-anchor="end">${Math.round((max * i) / 4)}</text>`;
+  }
+  const path = points.map((p, i) => (p.value == null ? null : `${x(i).toFixed(1)},${y(p.value).toFixed(1)}`));
+  let d = "", pen = false;
+  path.forEach((pt) => {
+    if (!pt) { pen = false; return; }
+    d += (pen ? " L" : "M") + pt; pen = true;
+  });
+  g += `<path d="${d}" fill="none" stroke="#16A36A" stroke-width="2.4" stroke-linecap="round"/>`;
+  points.forEach((p, i) => {
+    if (p.value == null) return;
+    g += `<circle cx="${x(i)}" cy="${y(p.value)}" r="3.4" fill="#fff" stroke="#16A36A" stroke-width="2"><title>${p.label}: ${p.value}</title></circle>`;
+    g += `<text class="axis" x="${x(i)}" y="${H - 8}" text-anchor="middle">${p.short || p.label}</text>`;
+  });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img">${g}</svg>`;
+}
+
+/* weekly forecast columns */
+function weekBars(weeks) {
+  const W = 720, H = 190, padL = 46, padB = 30, padT = 12, padR = 8;
+  const max = niceMax(Math.max(1, ...weeks.map((w) => w.amount)));
+  const iw = W - padL - padR, ih = H - padT - padB;
+  const bw = Math.min(90, iw / weeks.length - 18);
+  let g = "";
+  for (let i = 0; i <= 4; i++) {
+    const y = padT + ih - (ih * i) / 4;
+    g += `<line class="grid-line" x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}"/>
+          <text class="axis" x="${padL - 6}" y="${y + 3}" text-anchor="end">${inrShort((max * i) / 4).replace("₹", "")}</text>`;
+  }
+  weeks.forEach((w, i) => {
+    const cx = padL + (iw * (i + 0.5)) / weeks.length;
+    const h = (w.amount / max) * ih;
+    g += `<rect x="${(cx - bw / 2).toFixed(1)}" y="${(padT + ih - h).toFixed(1)}" width="${bw}" height="${Math.max(h, 0).toFixed(1)}" rx="4" fill="#16A36A"><title>${fmtDate(w.start)} - ${fmtDate(w.end)}: ${inrFull(w.amount)}</title></rect>
+          <text class="axis" x="${cx}" y="${H - 16}" text-anchor="middle">${fmtDate(w.start).slice(0, 5)}</text>
+          <text class="axis" x="${cx}" y="${H - 5}" text-anchor="middle" style="font-weight:600;fill:#0F172A">${inrShort(w.amount)}</text>`;
+  });
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img">${g}</svg>`;
+}
+
+function ageingBars(ageing) {
+  const rows = [["0-30", "0-30 days", "#16A36A"], ["31-60", "31-60 days", "#E9A23B"],
+                ["61-90", "61-90 days", "#E2822B"], ["90+", "90+ days", "#DC5656"]];
+  const max = Math.max(1, ...rows.map(([k]) => ageing.buckets[k] || 0));
+  return rows.map(([k, label, color]) => {
+    const v = ageing.buckets[k] || 0;
+    const c = ageing.counts[k] || 0;
+    const pct = Math.max(v > 0 ? 3 : 0, (v / max) * 100);
+    return `<div class="ageing-row">
+      <span class="ag-label">${label}</span>
+      <div class="ag-bar"><div class="ag-fill" style="width:${pct}%;background:${color}"></div></div>
+      <span class="ag-val num">${inrShort(v)}</span>
+      <span style="width:74px;font-size:11.5px;color:var(--muted)">${c} invoice${c === 1 ? "" : "s"}</span>
+    </div>`;
+  }).join("") + `<div class="ageing-row" style="margin-top:2px">
+      <span class="ag-label">Not due</span>
+      <div class="ag-bar"><div class="ag-fill" style="width:${Math.max(3, (ageing.not_due / max) * 100)}%;background:#CBD5E1"></div></div>
+      <span class="ag-val num">${inrShort(ageing.not_due)}</span>
+      <span style="width:74px;font-size:11.5px;color:var(--muted)">on time</span>
+    </div>`;
+}
+
+function niceMax(v) {
+  const pow = Math.pow(10, Math.floor(Math.log10(v)));
+  const n = v / pow;
+  const nice = n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10;
+  return nice * pow;
+}
+
+</script>
+<script>
+/* shell.js - sidebar, topbar, search, notifications */
+"use strict";
+
+const NAV = [
+  ["overview", "Overview", "overview"],
+  ["invoices", "Invoices", "invoices"],
+  ["customers", "Customers", "customers"],
+  ["collections", "Collection Intelligence", "collections"],
+  ["followups", "Follow-ups", "followups"],
+  ["cashflow", "Cash Flow", "cashflow"],
+  ["disputes", "Disputes", "disputes"],
+  ["reports", "Reports", "reports"],
+  ["settings", "Settings", "settings"],
+];
+
+let BOOT = null;
+
+async function loadBoot() {
+  BOOT = await api("/api/bootstrap");
+  renderShell();
+}
+
+function renderShell() {
+  const counts = BOOT.counts || {};
+  $("#sidebar").innerHTML = `
+    <div class="brand">
+      <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6l7 13 7-13"/></svg></div>
+      <div><div class="name">Vasool AI</div><div class="tag">Get paid. Stay ahead.</div></div>
+    </div>
+    <nav>
+      <div class="sec">Workspace</div>
+      ${NAV.slice(0, 3).map(navItem).join("")}
+      <div class="sec">Collections</div>
+      ${NAV.slice(3, 6).map((n) => navItem(n, counts)).join("")}
+      <div class="sec">Manage</div>
+      ${NAV.slice(6).map((n) => navItem(n, counts)).join("")}
+    </nav>
+    <button class="collapse-btn" id="collapseBtn">${icon("collapse")}<span>Collapse</span></button>
+    <div class="side-foot">v1.0 · Sample workspace</div>`;
+  $("#collapseBtn").addEventListener("click", () => {
+    document.body.classList.toggle("sidebar-collapsed");
+    try { localStorage.setItem("vs-collapsed", document.body.classList.contains("sidebar-collapsed") ? "1" : "0"); } catch (e) {}
+  });
+  if (localStorage.getItem("vs-collapsed") === "1") document.body.classList.add("sidebar-collapsed");
+
+  const initials = (BOOT.workspace.owner || "U").split(" ").map((w) => w[0]).slice(0, 2).join("");
+  $("#topbar").innerHTML = `
+    <button class="icon-btn menu-btn" id="menuBtn" aria-label="Menu">${icon("menu")}</button>
+    <span class="ws-name" title="${esc(BOOT.workspace.name)}">${esc(BOOT.workspace.name)}</span>
+    <span class="sample-pill" title="This workspace runs on realistic sample data. Nothing here is live financial information.">SAMPLE DATA</span>
+    <div class="search-wrap">
+      ${icon("search")}
+      <input class="search" id="globalSearch" placeholder="Search customers, invoices, amounts..." autocomplete="off">
+      <div id="searchResults" hidden></div>
+    </div>
+    <button class="icon-btn" id="helpBtn" aria-label="Help">${icon("help")}</button>
+    <button class="icon-btn" id="bellBtn" aria-label="Notifications">${icon("bell")}<span class="dot" id="bellDot" hidden></span></button>
+    <div class="avatar" id="avatarBtn" title="${esc(BOOT.workspace.owner)}">${esc(initials)}</div>`;
+
+  $("#menuBtn").addEventListener("click", () => {
+    document.body.classList.toggle("sidebar-open");
+    $("#scrim").hidden = !document.body.classList.contains("sidebar-open");
+  });
+  $("#scrim").addEventListener("click", () => {
+    document.body.classList.remove("sidebar-open");
+    $("#scrim").hidden = true;
+  });
+
+  initSearch();
+  initBell();
+  initHelp();
+  initAvatar();
+  markActive();
+}
+
+function navItem([route, label, ic], counts) {
+  let count = "";
+  if (counts) {
+    if (route === "followups" && counts.followups_due) count = `<span class="count">${counts.followups_due}</span>`;
+    if (route === "disputes" && counts.open_disputes) count = `<span class="count">${counts.open_disputes}</span>`;
+    if (route === "invoices" && counts.open_invoices) count = `<span class="count">${counts.open_invoices}</span>`;
+  }
+  return `<a class="nav-item" href="#/${route}" data-route="${route}">${icon(ic)}<span>${label}</span>${count}</a>`;
+}
+
+function markActive() {
+  const route = (location.hash.replace(/^#\//, "") || "overview").split("/")[0].split("?")[0];
+  $$("#sidebar .nav-item").forEach((a) => a.classList.toggle("active", a.dataset.route === route));
+}
+
+/* global search */
+function initSearch() {
+  const input = $("#globalSearch"), box = $("#searchResults");
+  let timer = null;
+  input.addEventListener("input", () => {
+    clearTimeout(timer);
+    const q = input.value.trim();
+    if (q.length < 2) { box.hidden = true; return; }
+    timer = setTimeout(async () => {
+      try {
+        const r = await api("/api/search?q=" + encodeURIComponent(q));
+        const items = [];
+        r.customers.forEach((c) => items.push(
+          `<a class="dd-item" href="#/customers/${c.id}"><b>${esc(c.name)}</b> <span class="sub">· ${esc(c.city)} · ${inrShort(c.outstanding)} outstanding</span></a>`));
+        r.invoices.forEach((i) => items.push(
+          `<a class="dd-item" href="#/invoices/${i.id}"><b>${esc(i.number)}</b> <span class="sub">· ${esc(i.customer)} · ${inrShort(i.balance)} · ${STATUS_LABELS[i.status] || i.status}</span></a>`));
+        box.innerHTML = `<div class="dd-head">Results</div>` +
+          (items.length ? items.join("") : `<div class="dd-empty">No matches for "${esc(q)}". Try a customer name, invoice number or amount.</div>`);
+        box.hidden = false;
+      } catch (e) { box.hidden = true; }
+    }, 220);
+  });
+  document.addEventListener("click", (e) => {
+    if (!box.contains(e.target) && e.target !== input) box.hidden = true;
+  });
+  box.addEventListener("click", () => { box.hidden = true; input.value = ""; });
+}
+
+/* notifications */
+function initBell() {
+  const btn = $("#bellBtn"), dot = $("#bellDot");
+  btn.addEventListener("click", async (e) => {
+    e.stopPropagation();
+    closeDropdowns();
+    const dd = document.createElement("div");
+    dd.className = "dropdown";
+    dd.innerHTML = `<div class="dd-head">Notifications</div><div class="dd-empty">Loading...</div>`;
+    $("#topbar").appendChild(dd);
+    try {
+      const r = await api("/api/notifications");
+      dd.innerHTML = `<div class="dd-head">Notifications</div>` + (r.notifications.length
+        ? r.notifications.map((n) => `<a class="dd-item" href="${n.link}">${esc(n.text)}<div class="sub">${fmtDate(n.date)}</div></a>`).join("")
+        : `<div class="dd-empty">All caught up. Nothing needs your attention right now.</div>`);
+      dot.hidden = r.notifications.length === 0;
+      dd.addEventListener("click", () => dd.remove());
+    } catch (err) {
+      dd.innerHTML = `<div class="dd-empty">Could not load notifications.</div>`;
+    }
+  });
+}
+
+function initHelp() {
+  $("#helpBtn").addEventListener("click", () => openModal(`
+    <div class="m-head"><h3>About this workspace</h3><button class="x" aria-label="Close">&times;</button></div>
+    <div class="m-body">
+      <p style="font-size:13.5px;color:#334155;margin-top:0">
+        <b>Vasool AI</b> helps Indian MSMEs track receivables, prioritise collections and forecast cash flow.
+        This workspace runs on <b>realistic sample data</b> for Khandelwal Enterprises Pvt Ltd, a fictional
+        packaging distributor, so every screen can be explored safely. No live financial information is shown.
+      </p>
+      <div class="kv">
+        <span class="k">Overview</span><span>The five-second health check of your receivables.</span>
+        <span class="k">Collection Intelligence</span><span>A prioritised queue - who to chase first and why.</span>
+        <span class="k">Follow-ups</span><span>Today's call list with ready WhatsApp and email drafts.</span>
+        <span class="k">Cash Flow</span><span>What should land in your account in the next 7, 15 and 30 days.</span>
+      </div>
+    </div>
+    <div class="m-actions"><button class="btn primary" onclick="this.closest('.modal-scrim').remove()">Got it</button></div>`));
+}
+
+function initAvatar() {
+  $("#avatarBtn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    closeDropdowns();
+    const dd = document.createElement("div");
+    dd.className = "dropdown";
+    dd.style.width = "250px";
+    dd.innerHTML = `
+      <div class="dd-head">Account</div>
+      <a class="dd-item"><b>${esc(BOOT.workspace.owner)}</b><div class="sub">${esc(BOOT.workspace.owner_email)}</div></a>
+      <a class="dd-item" href="#/settings">${icon("settings", "")} Workspace settings</a>
+      <a class="dd-item" href="#/settings">Business profile (GSTIN ${esc(BOOT.workspace.gstin)})</a>`;
+    $("#topbar").appendChild(dd);
+    dd.addEventListener("click", () => dd.remove());
+  });
+}
+
+function closeDropdowns() { $$(".dropdown").forEach((d) => d.remove()); }
+document.addEventListener("click", closeDropdowns);
+
+</script>
+<script>
+/* page_overview.js - the five-second dashboard */
+"use strict";
+
+async function pageOverview(el) {
+  el.innerHTML = skeleton(5) + skeleton(3);
+  const d = await api("/api/overview");
+  const k = d.kpis;
+  const trend = d.trend;
+  const thisMonth = trend[trend.length - 1];
+  const lastMonth = trend[trend.length - 2];
+  const pacePct = thisMonth.expected ? Math.round((100 * thisMonth.collected) / thisMonth.expected) : 0;
+
+  el.innerHTML = `
+  <div class="page-head">
+    <div>
+      <h1>Overview</h1>
+      <div class="desc">Your receivables at a glance - what is outstanding, what is at risk, and what lands next.</div>
+    </div>
+    <div class="head-actions">
+      <a class="btn" href="#/reports">${icon("reports")} Reports</a>
+      <a class="btn primary" href="#/followups">${icon("followups")} Today's follow-ups (${d.actions.followups_due.length})</a>
+    </div>
+  </div>
+
+  <div class="grid kpis">
+    ${kpi("Total Outstanding", inrShort(k.total_outstanding), `${k.open_invoice_count} open invoices`, "wallet")}
+    ${kpi("Overdue Amount", inrShort(k.overdue_amount), `${k.overdue_invoice_count} invoices past due`, "alert", true)}
+    ${kpi("Collected This Month", inrShort(k.collected_this_month), `${pacePct}% of what fell due`, "check")}
+    ${kpi("Expected - Next 7 Days", inrShort(k.expected_7d), "after customer delay patterns", "trend")}
+  </div>
+
+  <div class="grid two" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-head"><h3>Collections Performance</h3><span class="hint">Expected vs collected, monthly</span></div>
+      <div class="card-body">${groupedBars(trend.map((t) => t.month), [
+        { label: "Expected", color: "#CBD5E1", values: trend.map((t) => t.expected) },
+        { label: "Collected", color: "#16A36A", values: trend.map((t) => t.collected) },
+      ])}</div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Receivables Ageing</h3><a class="hint" href="#/reports">Full report</a></div>
+      <div class="card-body">${ageingBars(d.ageing)}</div>
+    </div>
+  </div>
+
+  <div class="grid two" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-head"><h3>Action Centre</h3><span class="hint">What needs you today</span></div>
+      <div class="card-body" style="padding-top:6px">
+        ${actionCentre(d.actions)}
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">${icon("spark")}<h3>Vasool AI Insights</h3><span class="hint">From your records</span></div>
+      <div class="card-body" style="padding-top:6px">${insightsPanel(d.insights)}</div>
+    </div>
+  </div>
+
+  <div class="grid two-even" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-head"><h3>Customer Risk</h3><a class="hint" href="#/customers">All customers</a></div>
+      <div class="card-body" style="padding-top:6px">${riskLists(d.risk)}</div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h3>Cash Flow Preview</h3><a class="hint" href="#/cashflow">Full forecast</a></div>
+      <div class="card-body">
+        <div class="scn-grid" style="grid-template-columns:repeat(3,1fr);margin:0">
+          ${["7", "15", "30"].map((h) => `
+            <a class="scn" href="#/cashflow" style="text-decoration:none;color:inherit">
+              <div class="sc-name">Next ${h} days</div>
+              <div class="sc-val num">${inrShort(d.cashflow_preview[h])}</div>
+              <div class="sc-sub">base scenario</div>
+            </a>`).join("")}
+        </div>
+        <p style="font-size:12.5px;color:var(--muted);margin:14px 0 0">
+          Forecasts use each customer's measured payment delay and exclude disputed invoices.
+          Assumptions are listed on the Cash Flow page.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  ${sampleNote()}`;
+}
+
+function kpi(label, value, sub, ic, warn) {
+  return `<div class="card kpi ${warn ? "warn" : ""}">
+    <div class="k-label">${icon(ic)} ${label}</div>
+    <div class="k-value num">${value}</div>
+    <div class="k-sub">${sub}</div>
+  </div>`;
+}
+
+function actionCentre(a) {
+  const sec = (title, rows) => rows ? `<div class="section-title">${title}</div>${rows}` : "";
+  const fu = a.followups_due.map((f) => `
+    <div class="row-item">
+      <div class="ic amber">${icon(f.kind === "call" ? "phone" : f.kind === "email" ? "email" : "whatsapp")}</div>
+      <div class="ri-body">
+        <div class="ri-title">${esc(f.title)}</div>
+        <div class="ri-sub">${esc(f.customer_name)}${f.invoice_number ? " · " + esc(f.invoice_number) : ""}${f.overdue_task ? ' · <span style="color:var(--danger);font-weight:600">task overdue</span>' : ""}</div>
+      </div>
+      <a class="btn small" href="#/followups">Open</a>
+    </div>`).join("");
+  const pay = a.recent_payments.slice(0, 3).map((p) => `
+    <div class="row-item">
+      <div class="ic green">${icon("check")}</div>
+      <div class="ri-body">
+        <div class="ri-title">${esc(p.customer)}</div>
+        <div class="ri-sub">${esc(p.number)} · ${esc(p.mode)} · ${relDay(p.date, BOOT.today)}</div>
+      </div>
+      <span class="ri-amt num" style="color:var(--accent-dark)">+ ${inrFull(p.amount)}</span>
+    </div>`).join("");
+  const od = a.newly_overdue.map((x) => `
+    <div class="row-item">
+      <div class="ic red">${icon("alert")}</div>
+      <div class="ri-body">
+        <div class="ri-title">${esc(x.number)} - ${esc(x.customer)}</div>
+        <div class="ri-sub">${x.days_overdue}d overdue</div>
+      </div>
+      <span class="ri-amt num">${inrFull(x.balance)}</span>
+    </div>`).join("");
+  const dp = a.pending_disputes.map((x) => `
+    <div class="row-item">
+      <div class="ic red">${icon("disputes")}</div>
+      <div class="ri-body">
+        <div class="ri-title">${esc(x.customer)}</div>
+        <div class="ri-sub">${esc(x.reason)} · open ${x.days_open}d</div>
+      </div>
+      <a class="btn small" href="#/disputes">Resolve</a>
+    </div>`).join("");
+  const body =
+    sec("Follow-ups due today", fu || `<div class="ri-sub" style="padding:6px 0 12px">Nothing due. The queue is clear.</div>`) +
+    sec("Payments received this week", pay || `<div class="ri-sub" style="padding:6px 0 12px">No payments in the last 7 days.</div>`) +
+    sec("Newly overdue", od) +
+    sec("Pending disputes", dp);
+  return body || emptyState("Nothing needs attention", "No follow-ups, no new overdues, no open disputes.", "check");
+}
+
+function insightsPanel(ins) {
+  if (!ins.length) return emptyState("No insights yet", "Insights appear as your invoices, payments and follow-ups accumulate.", "spark");
+  return ins.map((i) => {
+    const tone = i.kind === "promise" || i.kind === "ageing" ? "danger" : i.kind === "risk" ? "warn" : "";
+    const recs = (i.records || []).map((r) => `<a class="in-rec" href="#/${r.type === "customer" ? "customers" : "invoices"}/${r.id}">${esc(r.label)}</a>`).join("");
+    return `<div class="insight ${tone}">
+      <div class="in-title">${icon("spark")} ${esc(i.title)}
+        <span class="why" data-why="${esc((i.records || []).map((r) => r.label).join(", ") || "Computed from open invoices, payment history and logged follow-ups.")}">Why this?</span></div>
+      <div class="in-text">${esc(i.text)}</div>
+      <div class="in-foot">
+        <a class="btn small" href="${i.link}">${esc(i.action)} ${icon("arrowR")}</a>
+        ${recs}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function riskLists(r) {
+  const row = (c, extra) => `
+    <div class="row-item">
+      <div class="ic ${c.risk === "high" ? "red" : c.risk === "medium" ? "amber" : "green"}">${icon("building")}</div>
+      <div class="ri-body">
+        <div class="ri-title"><a href="#/customers/${c.id}" style="color:inherit">${esc(c.name)}</a></div>
+        <div class="ri-sub">${extra(c)}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="ri-amt num">${inrShort(c.outstanding)}</div>
+        <div>${riskPill(c.risk)}</div>
+      </div>
+    </div>`;
+  let out = `<div class="section-title">Highest outstanding</div>` +
+    (r.top_outstanding.map((c) => row(c, (x) => `${esc(x.city)}${x.avg_delay != null ? " · pays " + Math.round(x.avg_delay) + "d late on avg" : ""}`)).join("")
+      || `<div class="ri-sub" style="padding-bottom:10px">No outstanding balances.</div>`);
+  if (r.repeat_late.length)
+    out += `<div class="section-title">Repeated payment delays</div>` +
+      r.repeat_late.map((c) => row(c, (x) => `Late on the majority of past payments`)).join("");
+  return out;
+}
+
+function sampleNote() {
+  return `<div class="footer-note">
+    ${icon("alert")}
+    <span><b>Sample data.</b> This workspace shows realistic, interconnected sample records for demonstration. Figures, dates and risk flags are computed from those records - none of it is live financial information.</span>
+  </div>`;
+}
+
+/* delegated click for "Why this?" */
+document.addEventListener("click", (e) => {
+  const w = e.target.closest("[data-why]");
+  if (!w) return;
+  openModal(`
+    <div class="m-head"><h3>Why this insight</h3><button class="x" aria-label="Close">&times;</button></div>
+    <div class="m-body">
+      <p style="font-size:13px;color:#334155;margin-top:0">Vasool AI only raises insights it can trace back to records. This one is based on:</p>
+      <p style="font-size:13px;color:#334155"><b>${esc(w.dataset.why)}</b></p>
+      <p style="font-size:12.5px;color:var(--muted)">Amounts come from open invoice balances; delay behaviour from paid-invoice history; disputes and promises from logged follow-ups. No figure is generated without an underlying record.</p>
+    </div>
+    <div class="m-actions"><button class="btn primary" onclick="this.closest('.modal-scrim').remove()">Understood</button></div>`);
+});
+
+</script>
+<script>
+/* page_invcust.js - invoices, invoice detail, customers, customer detail */
+"use strict";
+
+/* ---------------- Invoices list ---------------- */
+async function pageInvoices(el, params) {
+  el.innerHTML = `
+  <div class="page-head">
+    <div><h1>Invoices</h1><div class="desc">Every receivable, its status and what is still to come in.</div></div>
+    <div class="head-actions"><button class="btn primary" id="upBtn">${icon("plus")} Upload invoice</button></div>
+  </div>
+  <div class="filters">
+    <input type="text" id="fQ" placeholder="Search number or customer..." value="${esc(params.q || "")}">
+    <select id="fStatus">
+      <option value="">All statuses</option>
+      ${["overdue", "disputed", "partial", "due", "paid"].map((s) =>
+        `<option value="${s}" ${params.status === s ? "selected" : ""}>${STATUS_LABELS[s]}</option>`).join("")}
+    </select>
+    <select id="fBucket">
+      <option value="">All ageing</option>
+      ${["0-30", "31-60", "61-90", "90+"].map((b) =>
+        `<option value="${b}" ${params.bucket === b ? "selected" : ""}>${b} days overdue</option>`).join("")}
+    </select>
+    <span class="spacer"></span>
+    <span id="fCount" style="font-size:12.5px;color:var(--muted)"></span>
+  </div>
+  <div class="card"><div class="tbl-wrap" id="invTbl">${skeleton(6)}</div></div>
+  ${sampleNote()}`;
+
+  $("#upBtn").addEventListener("click", uploadModal);
+
+  async function refresh() {
+    const qs = new URLSearchParams();
+    if ($("#fQ").value.trim()) qs.set("q", $("#fQ").value.trim());
+    if ($("#fStatus").value) qs.set("status", $("#fStatus").value);
+    if ($("#fBucket").value) qs.set("bucket", $("#fBucket").value);
+    const d = await api("/api/invoices?" + qs.toString());
+    $("#fCount").textContent = `${d.invoices.length} invoice${d.invoices.length === 1 ? "" : "s"}`;
+    $("#invTbl").innerHTML = d.invoices.length ? invTable(d.invoices) :
+      emptyState("No invoices match", "Try clearing a filter, or upload a new invoice to get started.", "invoices");
+    $$("#invTbl tbody tr").forEach((tr) => tr.addEventListener("click", () => {
+      location.hash = "#/invoices/" + tr.dataset.id;
+    }));
+  }
+  let t = null;
+  $("#fQ").addEventListener("input", () => { clearTimeout(t); t = setTimeout(refresh, 220); });
+  $("#fStatus").addEventListener("change", refresh);
+  $("#fBucket").addEventListener("change", refresh);
+  await refresh();
+}
+
+function invTable(invs) {
+  return `<table class="tbl"><thead><tr>
+    <th>Invoice</th><th>Customer</th><th>Issued</th><th>Due date</th>
+    <th class="r">Amount</th><th class="r">Received</th><th class="r">Balance</th><th>Status</th>
+  </tr></thead><tbody>
+  ${invs.map((i) => `<tr data-id="${i.id}">
+    <td><span class="t-main">${esc(i.number)}</span></td>
+    <td>${esc(i.customer)}</td>
+    <td class="num">${fmtDate(i.issue_date)}</td>
+    <td class="num">${fmtDate(i.due_date)}${i.status !== "paid" && i.days_overdue > 0 ? `<div class="t-sub" style="color:var(--danger)">${i.days_overdue}d overdue</div>` : ""}</td>
+    <td class="r num">${inrFull(i.amount)}</td>
+    <td class="r num">${i.amount_paid ? inrFull(i.amount_paid) : "-"}</td>
+    <td class="r num" style="font-weight:600">${i.balance ? inrFull(i.balance) : "-"}</td>
+    <td>${statusBadge(i.status)}</td>
+  </tr>`).join("")}
+  </tbody></table>`;
+}
+
+function uploadModal() {
+  const close = openModal(`
+    <div class="m-head"><h3>Upload invoice</h3><button class="x" aria-label="Close">&times;</button></div>
+    <div class="m-body">
+      <div style="border:1.5px dashed #CBD5E1;border-radius:10px;padding:26px;text-align:center;color:var(--muted)">
+        ${icon("download")}
+        <div style="font-weight:600;color:var(--text);margin-top:6px">Drop a PDF or photo of the invoice</div>
+        <div style="font-size:12.5px;margin-top:3px">Vasool AI reads the number, customer, amount and due date automatically.</div>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted)">Invoice capture is part of the production roadmap. In this sample workspace the invoice list is pre-loaded, so there is nothing to upload yet.</p>
+    </div>
+    <div class="m-actions"><button class="btn primary" onclick="this.closest('.modal-scrim').remove()">Done</button></div>`);
+}
+
+/* ---------------- Invoice detail ---------------- */
+async function pageInvoiceDetail(el, id) {
+  el.innerHTML = skeleton(5);
+  const d = await api("/api/invoices/" + id);
+  const i = d.invoice, c = d.customer;
+  const pct = i.amount ? Math.round((100 * i.amount_paid) / i.amount) : 0;
+  el.innerHTML = `
+  <div class="detail-head">
+    <a class="back" href="#/invoices">${icon("chevL")} Invoices</a>
+    <h1>${esc(i.number)}</h1>
+    ${statusBadge(i.status)}
+    <div class="head-actions" style="margin-left:auto">
+      <button class="btn" id="dW">${icon("whatsapp")} WhatsApp draft</button>
+      <button class="btn" id="dE">${icon("email")} Email draft</button>
+    </div>
+  </div>
+  <div class="stat-strip">
+    <div class="stat"><div class="s-label">Invoice amount</div><div class="s-value num">${inrFull(i.amount)}</div></div>
+    <div class="stat"><div class="s-label">Received</div><div class="s-value num" style="color:var(--accent-dark)">${inrFull(i.amount_paid)}</div></div>
+    <div class="stat"><div class="s-label">Balance due</div><div class="s-value num">${inrFull(i.balance)}</div></div>
+    <div class="stat"><div class="s-label">${i.days_overdue > 0 && i.balance > 0 ? "Days overdue" : "Due date"}</div>
+      <div class="s-value num">${i.days_overdue > 0 && i.balance > 0 ? i.days_overdue + " days" : fmtDate(i.due_date)}</div></div>
+  </div>
+  <div class="grid two">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head"><h3>Details</h3></div>
+        <div class="card-body">
+          <div class="kv">
+            <span class="k">Customer</span><a href="#/customers/${c.id}">${esc(c.name)}</a>
+            <span class="k">Issued</span><span class="num">${fmtDate(i.issue_date)}</span>
+            <span class="k">Due date</span><span class="num">${fmtDate(i.due_date)} (${i.terms_days || 30} day terms)</span>
+            <span class="k">Payment progress</span>
+            <span><div class="progress"><div class="p-fill" style="width:${pct}%"></div></div><span style="font-size:12px;color:var(--muted)">${pct}% received</span></span>
+            ${d.dispute ? `<span class="k">Dispute</span><span><span class="badge ${d.dispute.status}">${d.dispute.status}</span> ${esc(d.dispute.reason)} - <a href="#/disputes">view</a></span>` : ""}
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Payment history</h3></div>
+        <div class="card-body" style="padding-top:6px">
+          ${i.payments.length ? `<table class="tbl"><thead><tr><th>Date</th><th>Mode</th><th class="r">Amount</th></tr></thead>
+            <tbody>${i.payments.map((p) => `<tr style="cursor:default"><td class="num">${fmtDate(p.date)}</td><td>${esc(p.mode)}</td><td class="r num">${inrFull(p.amount)}</td></tr>`).join("")}</tbody></table>`
+          : emptyState("No payments yet", "Payments recorded against this invoice will appear here.", "wallet")}
+        </div>
+      </div>
+    </div>
+    <div class="card" style="align-self:start">
+      <div class="card-head"><h3>Follow-up & communication history</h3></div>
+      <div class="card-body">
+        ${d.comms.length ? `<div class="timeline">${d.comms.map((cm) => `
+          <div class="tl-item ${cm.direction === "in" ? "in" : ""}">
+            <div class="tl-date">${fmtDate(cm.date)} · ${cm.direction === "in" ? "Received" : "Sent"} · ${cm.channel}</div>
+            <div class="tl-text">${esc(cm.summary)}</div>
+          </div>`).join("")}</div>`
+        : emptyState("No communication yet", "Reminders and replies for this invoice will be logged here.", "followups")}
+      </div>
+    </div>
+  </div>
+  ${sampleNote()}`;
+  $("#dW").addEventListener("click", () => toast("Drafts are generated from the Follow-ups page - open the task linked to this invoice."));
+  $("#dE").addEventListener("click", () => toast("Drafts are generated from the Follow-ups page - open the task linked to this invoice."));
+}
+
+/* ---------------- Customers ---------------- */
+async function pageCustomers(el) {
+  el.innerHTML = `
+  <div class="page-head">
+    <div><h1>Customers</h1><div class="desc">Who owes you what, and how reliably they pay.</div></div>
+  </div>
+  <div class="card"><div class="tbl-wrap" id="cTbl">${skeleton(6)}</div></div>
+  ${sampleNote()}`;
+  const d = await api("/api/customers");
+  $("#cTbl").innerHTML = `<table class="tbl"><thead><tr>
+    <th>Customer</th><th>City</th><th class="r">Outstanding</th><th class="r">Overdue</th>
+    <th class="r">Avg delay</th><th class="r">Open invoices</th><th>Risk</th>
+  </tr></thead><tbody>
+  ${d.customers.map((c) => `<tr data-id="${c.id}">
+    <td><span class="t-main">${esc(c.name)}</span><div class="t-sub">${esc(c.contact)}</div></td>
+    <td>${esc(c.city)}</td>
+    <td class="r num" style="font-weight:600">${c.outstanding ? inrFull(c.outstanding) : "-"}</td>
+    <td class="r num">${c.overdue_amount ? '<span style="color:var(--danger)">' + inrFull(c.overdue_amount) + "</span>" : "-"}</td>
+    <td class="r num">${c.avg_delay != null ? Math.round(c.avg_delay) + "d" : '<span class="t-sub">new</span>'}</td>
+    <td class="r num">${c.open_invoices}</td>
+    <td>${riskPill(c.risk)}</td>
+  </tr>`).join("")}</tbody></table>`;
+  $$("#cTbl tbody tr").forEach((tr) => tr.addEventListener("click", () => {
+    location.hash = "#/customers/" + tr.dataset.id;
+  }));
+}
+
+/* ---------------- Customer detail ---------------- */
+async function pageCustomerDetail(el, id) {
+  el.innerHTML = skeleton(5);
+  const d = await api("/api/customers/" + id);
+  const c = d.customer;
+  el.innerHTML = `
+  <div class="detail-head">
+    <a class="back" href="#/customers">${icon("chevL")} Customers</a>
+    <h1>${esc(c.name)}</h1>
+    ${riskPill(c.risk.level)}
+    <div class="head-actions" style="margin-left:auto">
+      <button class="btn primary" id="newFu">${icon("plus")} New follow-up</button>
+    </div>
+  </div>
+  <div class="stat-strip">
+    <div class="stat"><div class="s-label">Total outstanding</div><div class="s-value num">${inrFull(c.outstanding)}</div></div>
+    <div class="stat"><div class="s-label">Overdue</div><div class="s-value num" style="color:${c.overdue_amount ? "var(--danger)" : "inherit"}">${inrFull(c.overdue_amount)}</div></div>
+    <div class="stat"><div class="s-label">Avg payment delay</div><div class="s-value num">${c.avg_delay_measured != null ? Math.round(c.avg_delay_measured) + " days" : "No history"}</div></div>
+    <div class="stat"><div class="s-label">Open invoices</div><div class="s-value num">${c.open_invoices.length}</div></div>
+  </div>
+  <div class="grid two">
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head"><h3>Risk assessment</h3><span class="hint">Derived from payment records</span></div>
+        <div class="card-body">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">${c.risk.reasons.map((r) => `<span class="in-rec" style="font-size:12px;padding:4px 10px">${esc(r)}</span>`).join("")}</div>
+          <div class="kv" style="margin-top:14px">
+            <span class="k">Contact</span><span>${esc(c.contact)} · ${esc(c.phone)}</span>
+            <span class="k">Email</span><span>${esc(c.email)}</span>
+            <span class="k">City</span><span>${esc(c.city)}</span>
+            <span class="k">Customer since</span><span>${esc(c.since)}</span>
+            <span class="k">Credit limit</span><span class="num">${inrFull(c.credit_limit)}</span>
+            <span class="k">Notes</span><span>${esc(c.note)}</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Invoices</h3></div>
+        <div class="card-body" style="padding-top:6px">
+          <div class="tbl-wrap">${invTable(d.invoices)}</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-head"><h3>Payment history</h3></div>
+        <div class="card-body" style="padding-top:6px">
+          ${d.payments.length ? d.payments.map((p) => `
+            <div class="row-item">
+              <div class="ic green">${icon("check")}</div>
+              <div class="ri-body"><div class="ri-title">${esc(p.invoice)}</div>
+              <div class="ri-sub">${fmtDate(p.date)} · ${esc(p.mode)}</div></div>
+              <span class="ri-amt num" style="color:var(--accent-dark)">+ ${inrFull(p.amount)}</span>
+            </div>`).join("") : emptyState("No payments yet", "Payments from this customer will appear here.", "wallet")}
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>Communication log</h3></div>
+        <div class="card-body">
+          ${d.comms.length ? `<div class="timeline">${d.comms.map((cm) => `
+            <div class="tl-item ${cm.direction === "in" ? "in" : ""}">
+              <div class="tl-date">${fmtDate(cm.date)} · ${cm.direction === "in" ? "Received" : "Sent"} · ${cm.channel}</div>
+              <div class="tl-text">${esc(cm.summary)}</div>
+            </div>`).join("")}</div>` : emptyState("No communication yet", "Calls, WhatsApp messages and emails will be logged here.", "followups")}
+        </div>
+      </div>
+    </div>
+  </div>
+  ${sampleNote()}`;
+  $("#newFu").addEventListener("click", () => followupModal(c.id, c.name, () => pageCustomerDetail(el, id)));
+  $$(".card tbody tr[data-id]").forEach((tr) => tr.addEventListener("click", () => {
+    location.hash = "#/invoices/" + tr.dataset.id;
+  }));
+}
+
+</script>
+<script>
+/* page_collect.js - collection intelligence + follow-ups */
+"use strict";
+
+/* ---------------- Collection Intelligence ---------------- */
+async function pageCollections(el) {
+  el.innerHTML = `
+  <div class="page-head">
+    <div><h1>Collection Intelligence</h1>
+    <div class="desc">A prioritised queue of who to chase first. Rankings combine days overdue, amount at stake, payment behaviour, disputes and broken promises.</div></div>
+  </div>
+  <div id="queue">${skeleton(6)}</div>
+  ${sampleNote()}`;
+  const d = await api("/api/collections");
+  $("#queue").innerHTML = d.queue.length ? `<div class="card"><div class="card-body" style="padding-top:8px">` +
+    d.queue.map((q, idx) => `
+    <div class="row-item" style="align-items:center">
+      <div style="width:30px;text-align:center;font-weight:700;color:var(--muted)" class="num">${idx + 1}</div>
+      <div class="ic ${q.risk === "high" ? "red" : q.risk === "medium" ? "amber" : "green"}">${icon("building")}</div>
+      <div class="ri-body">
+        <div class="ri-title"><a href="#/customers/${q.customer_id}" style="color:inherit">${esc(q.customer)}</a>
+          <span style="font-weight:400;color:var(--muted);font-size:12px"> · ${esc(q.city)}</span></div>
+        <div class="ri-sub">${q.reasons.map(esc).join(" · ")}</div>
+        <div class="ri-sub" style="color:var(--accent-dark);font-weight:600;margin-top:3px">${icon("spark", "")} ${esc(q.recommended_action)}</div>
+      </div>
+      <div style="text-align:right;min-width:120px">
+        <div class="ri-amt num">${inrFull(q.outstanding)}</div>
+        <div class="ri-sub">${q.days_overdue > 0 ? q.days_overdue + "d overdue" : "not yet due"}</div>
+        <div class="ri-sub">${q.avg_delay != null ? "avg " + Math.round(q.avg_delay) + "d late" : "new customer"}</div>
+      </div>
+      <a class="btn small" href="#/invoices/${q.top_invoice_id}">${esc(q.top_invoice)}</a>
+    </div>`).join("") + `</div></div>`
+    : emptyState("Nothing to collect", "Every invoice is paid. Enjoy it while it lasts.", "check");
+}
+
+/* ---------------- Follow-ups ---------------- */
+async function pageFollowups(el) {
+  el.innerHTML = `
+  <div class="page-head">
+    <div><h1>Follow-ups</h1><div class="desc">Today's collection work: tasks, ready drafts and the communication log behind them.</div></div>
+    <div class="head-actions"><button class="btn primary" id="newFu">${icon("plus")} New follow-up</button></div>
+  </div>
+  <div class="tabs">
+    <div class="tab on" data-tab="pending">Pending</div>
+    <div class="tab" data-tab="done">Completed</div>
+    <div class="tab" data-tab="comms">Communication history</div>
+  </div>
+  <div id="fuBody">${skeleton(6)}</div>
+  ${sampleNote()}`;
+
+  const d = await api("/api/followups");
+  const render = (tab) => {
+    $$(".tab", el).forEach((t) => t.classList.toggle("on", t.dataset.tab === tab));
+    if (tab === "pending") renderPending(el, d, () => pageFollowups(el));
+    else if (tab === "done") renderDone(el, d);
+    else renderComms(el, d);
+  };
+  $$(".tab", el).forEach((t) => t.addEventListener("click", () => render(t.dataset.tab)));
+  $("#newFu").addEventListener("click", () => followupModal(null, null, () => pageFollowups(el)));
+  render("pending");
+}
+
+function renderPending(el, d, refresh) {
+  const host = $("#fuBody", el);
+  if (!d.pending.length) {
+    host.innerHTML = `<div class="card">${emptyState("Queue clear", "No pending follow-ups. New ones appear as invoices age or promises come due.", "check")}</div>`;
+    return;
+  }
+  host.innerHTML = `<div class="card"><div class="card-body" style="padding-top:8px">` +
+    d.pending.map((f) => `
+    <div class="row-item" style="align-items:center" data-fu="${f.id}">
+      <div class="ic ${f.overdue_task ? "red" : "amber"}">${icon(f.kind === "call" ? "phone" : f.kind === "email" ? "email" : "whatsapp")}</div>
+      <div class="ri-body">
+        <div class="ri-title">${esc(f.title)}</div>
+        <div class="ri-sub">${esc(f.customer_name)}${f.invoice_number ? ` · <a href="#/invoices/${f.invoice_id}">${esc(f.invoice_number)}</a> · ${inrShort(f.invoice_balance)} open` : ""}
+          · due <b style="color:${f.overdue_task ? "var(--danger)" : "inherit"}">${relDay(f.due_date, BOOT.today)}</b></div>
+        ${f.detail ? `<div class="ri-sub">${esc(f.detail)}</div>` : ""}
+        ${f.customer_response ? `<div class="ri-sub" style="color:var(--accent-dark)">Customer response: ${esc(f.customer_response)}</div>` : ""}
+      </div>
+      <div class="ri-act" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+        <button class="btn small" data-act="draftW">${icon("whatsapp")} Draft</button>
+        <button class="btn small" data-act="draftE">${icon("email")} Draft</button>
+        <button class="btn small" data-act="resched">${icon("calendar")} Reschedule</button>
+        <button class="btn small" data-act="resp">Record response</button>
+        <button class="btn small primary" data-act="done">${icon("check")} Contacted</button>
+      </div>
+    </div>`).join("") + `</div></div>`;
+
+  host.querySelectorAll("[data-fu]").forEach((row) => {
+    const id = row.dataset.fu;
+    const f = d.pending.find((x) => x.id === id);
+    row.querySelector('[data-act="draftW"]').addEventListener("click", () => draftModal(id, "whatsapp"));
+    row.querySelector('[data-act="draftE"]').addEventListener("click", () => draftModal(id, "email"));
+    row.querySelector('[data-act="resched"]').addEventListener("click", () => rescheduleModal(id, refresh));
+    row.querySelector('[data-act="resp"]').addEventListener("click", () => responseModal(id, refresh));
+    row.querySelector('[data-act="done"]').addEventListener("click", () => completeModal(id, f, refresh));
+  });
+}
+
+function renderDone(el, d) {
+  const host = $("#fuBody", el);
+  host.innerHTML = d.done.length ? `<div class="card"><div class="card-body" style="padding-top:8px">` +
+    d.done.map((f) => `
+    <div class="row-item">
+      <div class="ic green">${icon("check")}</div>
+      <div class="ri-body">
+        <div class="ri-title" style="color:var(--muted)">${esc(f.title)}</div>
+        <div class="ri-sub">${esc(f.customer_name)} · done ${fmtDate(f.completed_date)}${f.channel_done ? " via " + f.channel_done : ""}</div>
+        ${f.customer_response ? `<div class="ri-sub" style="color:var(--accent-dark)">Response: ${esc(f.customer_response)}</div>` : ""}
+      </div>
+    </div>`).join("") + `</div></div>`
+    : `<div class="card">${emptyState("Nothing completed yet", "Follow-ups you finish will be listed here with the outcome.", "check")}</div>`;
+}
+
+function renderComms(el, d) {
+  const host = $("#fuBody", el);
+  host.innerHTML = `<div class="card"><div class="card-body">
+    <div class="timeline">${d.comms.map((cm) => `
+      <div class="tl-item ${cm.direction === "in" ? "in" : ""}">
+        <div class="tl-date">${fmtDate(cm.date)} · ${cm.direction === "in" ? "Received" : "Sent"} · ${cm.channel}</div>
+        <div class="tl-text">${esc(cm.summary)}</div>
+      </div>`).join("")}</div></div></div>`;
+}
+
+/* ------- follow-up action modals ------- */
+async function draftModal(fuId, channel) {
+  const d = await api(`/api/followups/${fuId}/draft?channel=${channel}`);
+  const g = d.grounding;
+  openModal(`
+    <div class="m-head"><h3>${channel === "whatsapp" ? "WhatsApp" : "Email"} draft - ${esc(g.customer)}</h3><button class="x" aria-label="Close">&times;</button></div>
+    <div class="m-body">
+      ${d.subject ? `<div style="font-size:12.5px;color:var(--muted)">Subject</div><div style="font-weight:600;font-size:13.5px;margin-top:2px">${esc(d.subject)}</div>` : ""}
+      <div class="draft-box">${esc(d.body)}</div>
+      <div class="draft-note">${icon("spark")} Generated from your records: ${esc(g.invoice)}, balance ${inrShort(g.balance)}, ${g.days_overdue} days overdue. Review before sending - nothing is sent automatically.</div>
+    </div>
+    <div class="m-actions">
+      <button class="btn" data-copy>Copy text</button>
+      <button class="btn primary" onclick="this.closest('.modal-scrim').remove()">Done</button>
+    </div>`);
+  $("[data-copy]", $("#overlays")).addEventListener("click", async (e) => {
+    const text = (d.subject ? "Subject: " + d.subject + "\n\n" : "") + d.body;
+    try { await navigator.clipboard.writeText(text); toast("Draft copied to clipboard"); }
+    catch (err) { toast("Copy failed - select the text manually"); }
+  });
+}
+
+function completeModal(fuId, f, refresh) {
+  const close = openModal(`
+    <div class="m-head"><h3>Mark as contacted</h3><button class="x" aria-label="Close">&times;</button></div>
+    <div class="m-body">
+      <p style="font-size:13px;color:#334155;margin-top:0">${esc(f.title)}</p>
+      <label class="f">Channel used</label>
+      <select id="cChan"><option value="call">Call</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select>
+    </div>
+    <div class="m-actions">
+      <button class="btn" data-act="no">Cancel</button>
+      <button class="btn primary" data-act="ok">Mark contacted</button>
+    </div>`);
+  $('[data-act="no"]', $("#overlays")).addEventListener("click", close);
+  $('[data-act="ok"]', $("#overlays")).addEventListener("click", async () => {
+    close();
+    await api(`/api/followups/${fuId}/complete`, { channel: $("#cChan").value });
+    toast("Marked as contacted");
+    refresh();
+  });
+}
+
+function rescheduleModal(fuId, refresh) {
+  const close = openModal(`
+    <div class="m-head"><h3>Reschedule follow-up</h3><button class="x" aria-label="Close">&times;</button></div>
+    <div class="m-body">
+      <label class="f">New date</label>
+      <input type="date" id="rDate" value="${BOOT.today}" min="${BOOT.today}">
+    </div>
+    <div class="m-actions">
+      <button class="btn" data-act="no">Cancel</button>
+      <button class="btn primary" data-act="ok">Reschedule</button>
+    </div>`);
+  $('[data-act="no"]', $("#overlays")).addEventListener("click", close);
+  $('[data-act="ok"]', $("#overlays")).addEventListener("click", async () => {
+    const v = $("#rDate").value;
+    if (!v) return;
+    close();
+    await api(`/api/followups/${fuId}/reschedule`, { due_date: v });
+    toast("Follow-up rescheduled to " + fmtDate(v));
+    refresh();
+  });
+}
+
+function responseModal(fuId, refresh) {
+  const close = openModal(`
+    <div class="m-head"><h3>Record customer response</h3><button class="x" aria-label="Close">&times;</button></div>
+    <div class="m-body">
+      <label class="f">What did the customer say?</label>
+      <textarea id="respTxt" rows="3" placeholder="e.g. Promised payment by Friday; asked for statement copy"></textarea>
+    </div>
+    <div class="m-actions">
+      <button class="btn" data-act="no">Cancel</button>
+      <button class="btn primary" data-act="ok">Save response</button>
+    </div>`);
+  $('[data-act="no"]', $("#overlays")).addEventListener("click", close);
+  $('[data-act="ok"]', $("#overlays")).addEventListener("click", async () => {
+    const v = $("#respTxt").value.trim();
+    if (!v) return;
+    close();
+    await api(`/api/followups/${fuId}/response`, { response: v });
+    toast("Response recorded");
+    refresh();
+  });
+}
+
+async function followupModal(customerId, customerName, refresh) {
+  const d = await api("/api/customers");
+  const opts = d.customers.map((c) =>
+    `<option value="${c.id}" ${c.id === customerId ? "selected" : ""}>${esc(c.name)}</option>`).join("");
+  const close = openModal(`
+    <div class="m-head"><h3>New follow-up</h3><button class="x" aria-label="Close">&times;</button></div>
+    <div class="m-body">
+      <label class="f">Customer</label>
+      <select id="nCust">${opts}</select>
+      <label class="f">Task</label>
+      <input type="text" id="nTitle" maxlength="140" placeholder="e.g. Call about balance payment plan">
+      <label class="f">Channel</label>
+      <select id="nKind"><option value="call">Call</option><option value="whatsapp">WhatsApp</option><option value="email">Email</option></select>
+      <label class="f">Due date</label>
+      <input type="date" id="nDate" value="${BOOT.today}" min="${BOOT.today}">
+    </div>
+    <div class="m-actions">
+      <button class="btn" data-act="no">Cancel</button>
+      <button class="btn primary" data-act="ok">Create follow-up</button>
+    </div>`);
+  $('[data-act="no"]', $("#overlays")).addEventListener("click", close);
+  $('[data-act="ok"]', $("#overlays")).addEventListener("click", async () => {
+    const title = $("#nTitle").value.trim();
+    if (!title) { $("#nTitle").focus(); return; }
+    close();
+    await api("/api/followups", {
+      customer: $("#nCust").value, title,
+      kind: $("#nKind").value, due_date: $("#nDate").value,
+    });
+    toast("Follow-up created");
+    refresh && refresh();
+  });
+}
+
+</script>
+<script>
+/* page_rest.js - cash flow, disputes, reports, settings */
+"use strict";
+
+/* ---------------- Cash Flow ---------------- */
+async function pageCashflow(el, params) {
+  const horizon = [7, 15, 30].includes(Number(params.h)) ? Number(params.h) : 30;
+  el.innerHTML = `
+  <div class="page-head">
+    <div><h1>Cash Flow</h1><div class="desc">What should actually land in your account - weighted by how each customer really pays, not by due dates alone.</div></div>
+  </div>
+  <div class="chip-row" style="margin-bottom:16px">
+    ${[7, 15, 30].map((h) => `<span class="chip ${h === horizon ? "on" : ""}" data-h="${h}">Next ${h} days</span>`).join("")}
+  </div>
+  <div id="cfBody">${skeleton(5)}</div>
+  ${sampleNote()}`;
+
+  $$(".chip", el).forEach((ch) => ch.addEventListener("click", () => {
+    location.hash = "#/cashflow?h=" + ch.dataset.h;
+  }));
+
+  const d = await api("/api/cashflow?horizon=" + horizon);
+  const s = d.scenarios;
+  const scn = (key, name, sub) => `
+    <div class="scn ${key === "base" ? "on" : ""}">
+      <div class="sc-name">${name}</div>
+      <div class="sc-val num">${inrShort(s[key].total)}</div>
+      <div class="sc-sub">${sub}</div>
+    </div>`;
+  const items = s.base.items;
+  $("#cfBody").innerHTML = `
+    <div class="scn-grid">
+      ${scn("base", "Base", "each customer's usual delay applied")}
+      ${scn("delayed", "Delayed", "everything slips 15 days further")}
+      ${scn("optimistic", "Optimistic", "everyone pays on the due date")}
+    </div>
+    <div class="grid two">
+      <div class="card">
+        <div class="card-head"><h3>Expected by week</h3><span class="hint">Base scenario</span></div>
+        <div class="card-body">${weekBars(d.weekly)}</div>
+      </div>
+      <div class="card">
+        <div class="card-head"><h3>What makes up the base case</h3></div>
+        <div class="card-body" style="padding-top:6px">
+          ${items.length ? items.map((it) => `
+            <div class="row-item">
+              <div class="ic green">${icon("rupee")}</div>
+              <div class="ri-body">
+                <div class="ri-title"><a href="#/invoices/${it.invoice_id}" style="color:inherit">${esc(it.number)}</a> - ${esc(it.customer)}</div>
+                <div class="ri-sub">expected ${fmtDate(it.expected_date)} · ${Math.round(it.probability * 100)}% likely · ${inrShort(it.balance)} open</div>
+              </div>
+              <span class="ri-amt num">${inrShort(it.expected_amount)}</span>
+            </div>`).join("")
+          : emptyState("Nothing expected", "No undisputed invoice is expected to land within this horizon.", "cashflow")}
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><h3>Forecast assumptions</h3></div>
+      <div class="card-body">
+        <ul class="assumptions" style="margin:0;list-style:disc;padding-left:20px">
+          ${d.assumptions.map((a) => `<li>${esc(a)}</li>`).join("")}
+        </ul>
+      </div>
+    </div>`;
+}
+
+/* ---------------- Disputes ---------------- */
+async function pageDisputes(el) {
+  el.innerHTML = `
+  <div class="page-head">
+    <div><h1>Disputes</h1><div class="desc">Disputed invoices hold cash hostage. Track the reason, the evidence and the next step to resolution.</div></div>
+  </div>
+  <div id="dpBody">${skeleton(4)}</div>
+  ${sampleNote()}`;
+  const d = await api("/api/disputes");
+  const open = d.disputes.filter((x) => x.status === "open");
+  const resolved = d.disputes.filter((x) => x.status === "resolved");
+  const card = (x) => `
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-body">
+        <div style="display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap">
+          <div class="ic ${x.status === "open" ? "red" : "green"}" style="width:34px;height:34px">${icon("disputes")}</div>
+          <div style="flex:1;min-width:220px">
+            <div style="font-weight:600">${esc(x.customer_name)} · <a href="#/invoices/${x.invoice_id}">${esc(x.invoice_number)}</a>
+              <span class="num" style="color:var(--muted);font-weight:500"> · ${inrFull(x.amount)} held</span></div>
+            <div style="font-size:13px;color:#334155;margin-top:4px">${esc(x.reason)}</div>
+            <div style="font-size:12.5px;color:var(--muted);margin-top:5px">Opened ${fmtDate(x.opened_date)}${x.resolved_date ? " · resolved " + fmtDate(x.resolved_date) : ""}</div>
+            <div style="font-size:12.5px;margin-top:8px"><b>Supporting documents:</b> ${x.docs.map((doc) => `<span class="in-rec">${esc(doc)}</span>`).join(" ")}</div>
+            ${x.note ? `<div style="font-size:12.5px;color:var(--muted);margin-top:8px">${esc(x.note)}</div>` : ""}
+            ${x.next_action ? `<div style="font-size:13px;color:var(--accent-dark);font-weight:600;margin-top:9px">${icon("arrowR")} Next: ${esc(x.next_action)}</div>` : ""}
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-end">
+            <span class="badge ${x.status}">${x.status === "open" ? "Open" : "Resolved"}</span>
+            ${x.status === "open" ? `<button class="btn small" data-resolve="${x.id}">Mark resolved</button>` : ""}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  $("#dpBody").innerHTML =
+    `<div class="section-title">Open (${open.length})</div>` +
+    (open.map(card).join("") || `<div class="card">${emptyState("No open disputes", "When a customer contests an invoice it appears here with the evidence trail.", "disputes")}</div>`) +
+    `<div class="section-title">Resolved (${resolved.length})</div>` +
+    (resolved.map(card).join("") || `<div class="card">${emptyState("None resolved yet", "", "check")}</div>`);
+
+  $$("#dpBody [data-resolve]").forEach((b) => b.addEventListener("click", () => {
+    confirmModal("Resolve dispute?", "Marking this dispute resolved returns the invoice to the normal collections queue. Make sure the customer has accepted the settlement first.", "Mark resolved", async () => {
+      await api(`/api/disputes/${b.dataset.resolve}/status`, { status: "resolved" });
+      toast("Dispute marked resolved");
+      pageDisputes(el);
+    }, true);
+  }));
+}
+
+/* ---------------- Reports ---------------- */
+async function pageReports(el) {
+  el.innerHTML = `
+  <div class="page-head">
+    <div><h1>Reports</h1><div class="desc">Ageing, collection performance, customer behaviour and DSO - the numbers behind the dashboard.</div></div>
+    <div class="head-actions"><button class="btn" id="csvBtn">${icon("download")} Download customer report (CSV)</button></div>
+  </div>
+  <div class="tabs">
+    <div class="tab on" data-tab="ageing">Receivables ageing</div>
+    <div class="tab" data-tab="perf">Collection performance</div>
+    <div class="tab" data-tab="cust">Customer behaviour</div>
+    <div class="tab" data-tab="dso">DSO</div>
+  </div>
+  <div id="rpBody">${skeleton(5)}</div>
+  ${sampleNote()}`;
+
+  const d = await api("/api/reports");
+  const render = (tab) => {
+    $$(".tab", el).forEach((t) => t.classList.toggle("on", t.dataset.tab === tab));
+    const host = $("#rpBody", el);
+    if (tab === "ageing") {
+      host.innerHTML = `<div class="card"><div class="card-head"><h3>Receivables ageing</h3><span class="hint">open balances by days overdue</span></div>
+        <div class="card-body">${ageingBars(d.ageing)}</div></div>`;
+    } else if (tab === "perf") {
+      host.innerHTML = `<div class="card"><div class="card-head"><h3>Collection performance</h3><span class="hint">expected vs collected</span></div>
+        <div class="card-body">${groupedBars(d.trend.map((t) => t.month), [
+          { label: "Expected", color: "#CBD5E1", values: d.trend.map((t) => t.expected) },
+          { label: "Collected", color: "#16A36A", values: d.trend.map((t) => t.collected) },
+        ])}</div></div>`;
+    } else if (tab === "cust") {
+      host.innerHTML = `<div class="card"><div class="tbl-wrap"><table class="tbl"><thead><tr>
+        <th>Customer</th><th class="r">Total billed</th><th class="r">Outstanding</th>
+        <th class="r">Avg delay</th><th class="r">Late share</th><th>Risk</th></tr></thead><tbody>
+        ${d.customers.map((c) => `<tr data-id="${c.id}">
+          <td><span class="t-main">${esc(c.name)}</span><div class="t-sub">${esc(c.city)}</div></td>
+          <td class="r num">${inrFull(c.total_billed)}</td>
+          <td class="r num">${c.outstanding ? inrFull(c.outstanding) : "-"}</td>
+          <td class="r num">${c.avg_delay != null ? Math.round(c.avg_delay) + "d" : "new"}</td>
+          <td class="r num">${c.late_share != null ? Math.round(c.late_share * 100) + "%" : "-"}</td>
+          <td>${riskPill(c.risk)}</td></tr>`).join("")}
+        </tbody></table></div></div>`;
+      $$("#rpBody tbody tr", el).forEach((tr) => tr.addEventListener("click", () => {
+        location.hash = "#/customers/" + tr.dataset.id;
+      }));
+    } else {
+      host.innerHTML = `<div class="card"><div class="card-head"><h3>Days Sales Outstanding</h3><span class="hint">receivables ÷ billed × 30, monthly</span></div>
+        <div class="card-body">${lineChart(d.dso.map((x) => ({ label: monthLabel(x.month), short: monthLabel(x.month), value: x.dso })))}
+        <p style="font-size:12.5px;color:var(--muted);margin:10px 0 0">DSO approximates how many days of sales sit uncollected. A rising line means cash is slowing down; pair it with the ageing report to see where it is stuck.</p></div></div>`;
+    }
+  };
+  $$(".tab", el).forEach((t) => t.addEventListener("click", () => render(t.dataset.tab)));
+  $("#csvBtn").addEventListener("click", () => {
+    const rows = [["Customer", "City", "Total billed", "Outstanding", "Avg delay days", "Late share %", "Risk"]];
+    d.customers.forEach((c) => rows.push([c.name, c.city, c.total_billed, c.outstanding,
+      c.avg_delay != null ? Math.round(c.avg_delay) : "", c.late_share != null ? Math.round(c.late_share * 100) : "", c.risk]));
+    const csv = rows.map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(",")).join("\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+    a.download = "vasool-customer-report.csv";
+    a.click();
+    toast("CSV downloaded");
+  });
+  render("ageing");
+}
+
+/* ---------------- Settings ---------------- */
+async function pageSettings(el) {
+  el.innerHTML = skeleton(4);
+  const b = await api("/api/bootstrap");
+  const s = b.settings;
+  el.innerHTML = `
+  <div class="page-head">
+    <div><h1>Settings</h1><div class="desc">Workspace identity and collection preferences.</div></div>
+  </div>
+  <div class="grid two">
+    <div class="card">
+      <div class="card-head"><h3>Business profile</h3></div>
+      <div class="card-body">
+        <label class="f" style="margin-top:0">Workspace / business name</label>
+        <input type="text" id="sName" value="${esc(s.workspace_name)}" maxlength="80" style="width:100%;padding:8px 11px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px">
+        <div class="kv" style="margin-top:16px">
+          <span class="k">GSTIN</span><span class="num">${esc(b.workspace.gstin)}</span>
+          <span class="k">Owner</span><span>${esc(b.workspace.owner)} (${esc(b.workspace.owner_email)})</span>
+          <span class="k">Currency</span><span>INR - Indian formatting (lakh / crore, DD/MM/YYYY)</span>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="align-self:start">
+      <div class="card-head"><h3>Collection preferences</h3></div>
+      <div class="card-body">
+        <label class="f" style="margin-top:0">Default payment terms (days)</label>
+        <input type="number" id="sTerms" value="${s.default_terms_days}" min="0" max="180" style="width:110px;padding:8px 11px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px">
+        <label class="f">Reminder cadence (days after due)</label>
+        <input type="text" id="sCadence" value="${s.reminder_cadence_days.join(", ")}" style="width:160px;padding:8px 11px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px">
+        <label style="display:flex;gap:9px;align-items:center;margin-top:14px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="sPre" ${s.auto_remind_before_due ? "checked" : ""}> Remind habitual late payers before the due date
+        </label>
+        <label style="display:flex;gap:9px;align-items:center;margin-top:9px;font-size:13px;cursor:pointer">
+          <input type="checkbox" id="sWeekly" ${s.weekly_summary_email ? "checked" : ""}> Email me a weekly collections summary
+        </label>
+        <div style="margin-top:18px"><button class="btn primary" id="saveSet">Save settings</button></div>
+      </div>
+    </div>
+  </div>
+  ${sampleNote()}`;
+  $("#saveSet").addEventListener("click", async () => {
+    const cad = $("#sCadence").value.split(",").map((x) => parseInt(x.trim(), 10)).filter((n) => Number.isFinite(n));
+    await api("/api/settings", {
+      workspace_name: $("#sName").value,
+      default_terms_days: Math.max(0, parseInt($("#sTerms").value, 10) || 30),
+      reminder_cadence_days: cad.length ? cad : [3, 7, 14],
+      auto_remind_before_due: $("#sPre").checked,
+      weekly_summary_email: $("#sWeekly").checked,
+    });
+    await loadBoot();
+    toast("Settings saved");
+  });
+}
+
+</script>
+<script>
+/* app.js - router + boot */
+"use strict";
+
+function parseHash() {
+  const raw = location.hash.replace(/^#\/?/, "") || "overview";
+  const [pathPart, queryPart] = raw.split("?");
+  const segs = pathPart.split("/").filter(Boolean);
+  const params = {};
+  (queryPart || "").split("&").forEach((p) => {
+    const [k, v] = p.split("=");
+    if (k) params[decodeURIComponent(k)] = decodeURIComponent(v || "");
+  });
+  return { route: segs[0] || "overview", id: segs[1] || null, params };
+}
+
+async function route() {
+  closeDropdowns();
+  document.body.classList.remove("sidebar-open");
+  const scrim = $("#scrim");
+  if (scrim) scrim.hidden = true;
+  const { route, id, params } = parseHash();
+  const el = $("#page");
+  el.scrollTop = 0;
+  window.scrollTo(0, 0);
+  markActive();
+  try {
+    if (route === "overview") await pageOverview(el);
+    else if (route === "invoices" && id) await pageInvoiceDetail(el, id);
+    else if (route === "invoices") await pageInvoices(el, params);
+    else if (route === "customers" && id) await pageCustomerDetail(el, id);
+    else if (route === "customers") await pageCustomers(el);
+    else if (route === "collections") await pageCollections(el);
+    else if (route === "followups") await pageFollowups(el);
+    else if (route === "cashflow") await pageCashflow(el, params);
+    else if (route === "disputes") await pageDisputes(el);
+    else if (route === "reports") await pageReports(el);
+    else if (route === "settings") await pageSettings(el);
+    else { location.hash = "#/overview"; return; }
+  } catch (e) {
+    el.innerHTML = errorCard("Could not load this page. " + (e && e.message ? `(${e.message})` : ""));
+  }
+}
+
+window.addEventListener("hashchange", route);
+
+(async function boot() {
+  try {
+    await loadBoot();
+    await route();
+  } catch (e) {
+    $("#page").innerHTML = errorCard("Vasool AI could not start. Please refresh the page.");
+  }
+})();
+
+</script></body>
+</html>
